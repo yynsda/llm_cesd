@@ -192,15 +192,6 @@ Based on the information above, write individualized support advice in warm, pla
 12. Use a warm tone, like a family doctor speaking gently with an older adult.
 Output only the advice text. Do not add any title or label."""
     return prompt
-def generate_advice(api_key:str,prompt:str)->str:
-    client=OpenAI(api_key=api_key,base_url="https://api.deepseek.com")
-    resp=client.chat.completions.create(
-        model="deepseek-chat",
-        temperature=0.2,
-        max_tokens=700,
-        messages=[{"role":"user","content":prompt}]
-    )
-    return resp.choices[0].message.content.strip()
 def main():
     st.title("🧠 CES-D Mental Health Support Advice Generator")
     st.markdown("**Individualized Depressive Symptom Support Assessment**")
@@ -237,7 +228,7 @@ def main():
         st.divider()
         st.header("💬 Individualized Support Advice")
         if not api_key:
-            st.warning(f"DeepSeek API key was not found, so advice cannot be generated. Please check: {config_path}")
+            st.warning("DeepSeek API key was not found, so advice cannot be generated. Please check your Streamlit Secrets.")
         else:
             prompt=build_prompt(item_details,cesd_total,user_context)
             with st.spinner("Generating individualized advice..."):
